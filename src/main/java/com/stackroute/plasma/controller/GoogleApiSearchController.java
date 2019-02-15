@@ -21,15 +21,20 @@ public class GoogleApiSearchController {
     Api api = new Api();
     String newConcepts[] = api.getConcepts();
     List<String[]> list = new ArrayList();
-    public String[] result;
+    //List<String[]> list;
+    int j=0;
+    //public String[] result;
     private int initial;
     private int finall;
     @GetMapping("/search")
     public List<String[]> getApi(){
         //for(int i=0;i<10;i++)
         for(int i=0;i<2;i++){
-            result = googleApiSearchService.read(api.getDomain()+newConcepts[i],1,10);
+            String[] result;
+
+            result = googleApiSearchService.read(api.getDomain()+newConcepts[j++],1,10);
             list.add(result);
+
         }
        // result = googleApiSearchService.read(api.getDomain()+newConcepts[1], 1, 10);
         //System.out.println("hello");
