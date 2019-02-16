@@ -3,9 +3,9 @@ package com.stackroute.plasma.controller;
 import com.stackroute.plasma.model.Api;
 import com.stackroute.plasma.service.GoogleApiSearchService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import javax.json.Json;
 import javax.json.stream.JsonParser;
@@ -20,60 +20,38 @@ public class GoogleApiSearchController {
     GoogleApiSearchService googleApiSearchService;
     Api api = new Api();
     String newConcepts[] = api.getConcepts();
-    List<String[]> list = new ArrayList();
-    //List<String[]> list;
-    int j=0;
+
+    List<String[]> list ;
+    //int j=0;
     //public String[] result;
     private int initial;
     private int finall;
-    @GetMapping("/search")
-    public List<String[]> getApi(){
-        //for(int i=0;i<10;i++)
-        for(int i=0;i<2;i++){
-            String[] result;
-
-            result = googleApiSearchService.read(api.getDomain()+newConcepts[j++],1,10);
-            list.add(result);
-
-        }
-       // result = googleApiSearchService.read(api.getDomain()+newConcepts[1], 1, 10);
-        //System.out.println("hello");
-        //System.out.println(result);
-//        JsonParser parser = Json.createParser(new StringReader(result));
-//        while (parser.hasNext()) {
-//            JsonParser.Event event = parser.next();
-//
-//            if (event == JsonParser.Event.KEY_NAME) {
-//
-//                if (parser.getString().equals("htmlTitle")) {
-//                    JsonParser.Event value = parser.next();
-//
-//                    if (value == JsonParser.Event.VALUE_STRING)
-//                        System.out.println("Title (HTML): "
-//                                + parser.getString());
-//                }
-//
-//                if (parser.getString().equals("link")) {
-//
-//                    JsonParser.Event value = parser.next();
-//
-//                    if (value == JsonParser.Event.VALUE_STRING)
-//                        System.out.println("Link: " + parser.getString());
-//                }
-//
-//            }
-//
+//    @GetMapping("/search")
+//    public List<String[]> getApi(){
+//        for(int i=0;i<2;i++){
+//            String[] result;
+//            result = googleApiSearchService.read(api.getDomain()+newConcepts[j++],1,10);
+//            list.add(result);
 //        }
-//
-//        initial = initial + 10;
-//
-//        finall++;
-//
-//        System.out
-//                .println("**************************************************");
-//
-//        return result;
-        //return result;
-        return list;
+//        return list;
+//    }
+
+
+    @PostMapping(value = "/search")
+    public ResponseEntity<?> getPostApi(@RequestBody Api api)  {
+        list = new ArrayList();
+        ResponseEntity responseEntity;
+        int j=0;
+        for(int i=0;i<api.getConcepts().length;i++){
+            String[] result;
+            //int j=0;
+            result = googleApiSearchService.read(api.getDomain() + api.getConcepts()[j++],1,10);
+            list.add(result);
+        }
+        //googleApiSearchService.read(api.getDomain() + api.getConcepts()[j],1,10);
+        //trackService.saveTrack(track);
+        responseEntity = new ResponseEntity<List<String[]>>(list, HttpStatus.CREATED);
+
+        return responseEntity;
     }
 }

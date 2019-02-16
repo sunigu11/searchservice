@@ -1,14 +1,18 @@
 package com.stackroute.plasma.model;
 
+import java.security.Timestamp;
+
 public class Api {
     //final static String apiKey = "AIzaSyB-93tpPyxrK76l6iw-mFnsvDiUJCLpFw8";
     //final static String customSearchEngineKey = "006477474756235376421:nz2modhy5qa";
 
     // base url for the search query
     //final static String searchURL = "https://www.googleapis.com/customsearch/v1?";
-    private String domain = "java";
-    private  String[] concepts = {"encapsulation","abstraction"};
-
+   // private Timestamp timestamp;
+   // private String domain = "java";
+   // private  String[] concepts = {"encapsulation","abstraction"};
+    private String domain;
+    private String[] concepts;
     public Api(String domain, String[] concepts) {
         this.domain = domain;
         this.concepts = concepts;
